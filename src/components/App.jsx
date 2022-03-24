@@ -3,50 +3,79 @@ import '../reset.css';
 import '../App.css';
 
 function App() {
-const [todos, setTodos] = useState([
-  {
-    id: 1,
-    title: "Tarea 1",
-    isComplete: false,
-  },
-  {
-    id: 2,
-    title: "Tarea 2",
-    isComplete: false,
-  },
-  {
-    id: 3,
+  const [theinput, setTheinput] = useState("");
+  
+  const [todos, setTodos] = useState([
+    {
+      id: 1,
+      title: "Tarea 1",
+      isComplete: false,
+    },
+    {
+      id: 2,
+      title: "Tarea 2",
+      isComplete: false,
+    },
+    {
+      id: 3,
     title: "Tarea 3",
     isComplete: false,
   },
   {
-    id: 3,
+    id: 4,
     title: "asdsa",
     isComplete: true,
   },
 ]);
 
+const [theid, setTheid] = useState(1+Object.keys(todos).length);
+
+function holdFunction(event){
+  setTheinput(event.target.value);
+}
+
+function inputjaja(){
+if (theinput.trim()===""){
+  return;
+}
+
+  setTodos([...todos,
+    {
+      id: theid,
+      title:theinput,
+      isComplete: false,
+    }]);
+    setTheinput("");
+    setTheid(prevSetTheid => prevSetTheid+1);
+}
+
+function deleteTask(id){
+  setTodos([...todos].filter(todo=>(todo.id!==id)));
+  console.log("deleting task "+id)
+}
+
   return (
     <div className="todo-app-container">
       <div className="todo-app">
         <h2>Todo App</h2>
-        <form action="#">
+        <form action="#" onSubmit={inputjaja}>
           <input
             type="text"
             className="todo-input"
             placeholder="What do you need to do?"
+            value={theinput}
+            onChange={holdFunction}
           />
         </form>
-
         <ul className="todo-list">
           {todos.map((todo,index)=>(
-          <li className="todo-item-container">
+          <li key={todo.id} className="todo-item-container">
             <div className="todo-item">
-              <input type="checkbox" />
-              <span className="todo-item-label">{todo.title} </span>
+              <input type="checkbox"/>
+              <span className="todo-item-label">{todo.title+" id:"+todo.id} </span>
               {/* <input type="text" className="todo-item-input" value="Finish React Series" /> */}
             </div>
-            <button className="x-button">
+            <button className="x-button" onClick={()=>(deleteTask(todo.id))}>
               <svg
                 className="x-button-icon"
                 fill="none"
